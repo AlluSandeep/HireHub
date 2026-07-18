@@ -1,0 +1,33 @@
+# Dependencies
+server/node_modules/
+client/node_modules/
+
+# Environment files
+server/.env
+client/.env
+
+# Build folders
+client/dist/
+client/build/
+
+# Logs
+server/logs/
+*.log
+npm-debug.log*
+
+# Uploads
+server/uploads/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Runtime files
+*.pid
+*.seed

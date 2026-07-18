@@ -146,3 +146,35 @@ exports.updateJob = async (req, res) => {
 
   }
 };
+
+exports.deleteJob = async (req, res) => {
+  try {
+
+    const job = await Job.findOne({
+      _id: req.params.id,
+      recruiter: req.user.id
+    });
+
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: "Job not found or unauthorized"
+      });
+    }
+
+    await Job.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Job deleted successfully"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+};

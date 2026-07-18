@@ -8,7 +8,8 @@ const {
   createJob,
   getAllJobs,
   getJobById,
-  updateJob
+  updateJob,
+  deleteJob
 } = require("../controllers/jobController");
 
 const { jobValidation } = require("../validations/jobValidation");
@@ -32,6 +33,12 @@ router.put(
   authMiddleware,
   roleMiddleware("recruiter"),
   updateJob
+);
+router.delete(
+  "/:id",
+  authMiddleware,
+  roleMiddleware("recruiter"),
+  deleteJob
 );
 
 module.exports = router;

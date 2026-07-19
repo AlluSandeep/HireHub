@@ -57,21 +57,81 @@ exports.getAllJobs = async (req, res) => {
 
     try {
 
-        const jobs = await Job.find()
-            .populate("company", "companyName companyLocation companyLogo")
-            .populate("recruiter", "fullName email");
+        const page = Number(req.query.page) || 1;
+
+        const limit = Number(req.query.limit) || 10;
+
+        const skip = (page - 1) * limit;
+
+        const keyword = req.query.keyword || "";
+
+        const location = req.query.location || "";
+
+        const experience = req.query.experience;
+
+        let filter = {};
+
+        if (keyword) {
+
+            filter.title = {
+                $regex: keyword,
+                $options: "i"
+            };
+
+        }
+
+        if (location) {
+
+            filter.location = {
+                $regex: location,
+                $options: "i"
+            };
+
+        }
+
+        if (experience) {
+
+            filter.experience = {
+                $gte: Number(experience)
+            };
+
+        }
+
+        const jobs = await Job.find(filter)
+            .populate("company", "companyName companyLocation")
+            .populate("recruiter", "fullName")
+            .skip(skip)
+            .limit(limit)
+            .sort({
+                createdAt: -1
+            });
+
+        const totalJobs = await Job.countDocuments(filter);
 
         res.status(200).json({
+
             success: true,
-            totalJobs: jobs.length,
+
+            page,
+
+            totalPages: Math.ceil(totalJobs / limit),
+
+            totalJobs,
+
             jobs
+
         });
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         res.status(500).json({
+
             success: false,
+
             message: error.message
+
         });
 
     }

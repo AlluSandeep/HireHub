@@ -7,6 +7,9 @@ const roleMiddleware = require("../middleware/roleMiddleware");
 
 const {
   applyJob,
+  getMyApplications,
+  getApplicantsByJob,
+  updateApplicationStatus
 } = require("../controllers/applicationController");
 
 router.post(
@@ -14,6 +17,27 @@ router.post(
   authMiddleware,
   roleMiddleware("candidate"),
   applyJob
+);
+
+router.get(
+  "/my",
+  authMiddleware,
+  roleMiddleware("candidate"),
+  getMyApplications
+);
+
+router.get(
+  "/job/:jobId",
+  authMiddleware,
+  roleMiddleware("recruiter"),
+  getApplicantsByJob
+);
+
+router.put(
+  "/:applicationId/status",
+  authMiddleware,
+  roleMiddleware("recruiter"),
+  updateApplicationStatus
 );
 
 module.exports = router;

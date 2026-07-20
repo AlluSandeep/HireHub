@@ -9,7 +9,8 @@ const {
   applyJob,
   getMyApplications,
   getApplicantsByJob,
-  updateApplicationStatus
+  updateApplicationStatus,
+  getCandidateResume
 } = require("../controllers/applicationController");
 
 router.post(
@@ -38,6 +39,13 @@ router.put(
   authMiddleware,
   roleMiddleware("recruiter"),
   updateApplicationStatus
+);
+
+router.get(
+  "/candidate/:candidateId/resume",
+  authMiddleware,
+  roleMiddleware("recruiter"),
+  getCandidateResume
 );
 
 module.exports = router;

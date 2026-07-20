@@ -10,6 +10,7 @@ const companyRoutes = require("./routes/companyRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const errorMiddleware = require("./middleware/errorMiddleware");
 const applicationRoutes = require("./routes/applicationRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
+app.use("/api/users", userRoutes);
 
 app.use(errorMiddleware);
 

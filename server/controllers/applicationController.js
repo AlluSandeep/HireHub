@@ -171,3 +171,43 @@ exports.updateApplicationStatus = async (req, res) => {
 
   }
 };
+
+const User = require("../models/User");
+
+exports.getCandidateResume = async (req, res) => {
+  try {
+
+    const { candidateId } = req.params;
+
+    const candidate = await User.findById(candidateId).select(
+      "fullName email resume"
+    );
+
+    if (!candidate) {
+      return res.status(404).json({
+        success: false,
+        message: "Candidate not found"
+      });
+    }
+
+    if (!candidate.resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not uploaded"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      candidate
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+};

@@ -3,10 +3,14 @@ import { getAllJobs } from "../services/jobService";
 
 import JobCard from "../components/JobCard";
 import Loader from "../components/Loader";
+import SearchBar from "../components/SearchBar";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [search, setSearch] = useState("");
+const [location, setLocation] = useState("");
 
   const fetchJobs = async () => {
     try {
@@ -24,6 +28,18 @@ const Jobs = () => {
     fetchJobs();
   }, []);
 
+  const filteredJobs = jobs.filter((job) => {
+  const title = job.title?.toLowerCase() || "";
+  const company = job.company?.companyName?.toLowerCase() || "";
+  const jobLocation = String(job.location || "").toLowerCase();
+
+  return (
+    (title.includes(search.toLowerCase()) ||
+      company.includes(search.toLowerCase())) &&
+    jobLocation.includes(location.toLowerCase())
+  );
+});
+
   if (loading) return <Loader />;
 
   return (
@@ -33,16 +49,29 @@ const Jobs = () => {
         Latest Jobs
       </h1>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <SearchBar
+  search={search}
+  setSearch={setSearch}
+  location={location}
+  setLocation={setLocation}
+/>
 
-        {jobs.map((job) => (
-          <JobCard
-            key={job._id}
-            job={job}
-          />
-        ))}
-
-      </div>
+      {filteredJobs.length === 0 ? (
+  <div className="text-center py-10">
+    <h2 className="text-2xl font-semibold">
+      No Jobs Found
+    </h2>
+  </div>
+) : (
+  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {filteredJobs.map((job) => (
+      <JobCard
+        key={job._id}
+        job={job}
+      />
+    ))}
+  </div>
+)}
 
     </div>
   );

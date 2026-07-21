@@ -1,18 +1,18 @@
-import { useAuth } from "../context/AuthContext";
+import Hero from "../components/Hero";
+import Stats from "../components/Stats";
+import FeaturedJobs from "../components/FeaturedJobs";
+import TopCompanies from "../components/TopCompanies";
+import WhyChooseUs from "../components/WhyChooseUs";
 
 const Home = () => {
-  const { user } = useAuth();
-
   return (
-    <div>
-      <h1>Home Page</h1>
-
-      {user ? (
-        <h2>Welcome {user.name}</h2>
-      ) : (
-        <h2>Please Login</h2>
-      )}
-    </div>
+    <>
+      <Hero />
+      <Stats />
+      <FeaturedJobs />
+      <TopCompanies />
+      <WhyChooseUs />
+    </>
   );
 };
 

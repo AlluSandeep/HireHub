@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getJobById } from "../services/jobService";
 import Loader from "../components/Loader";
+import { applyJob } from "../services/applicationService";
+import { useAuth } from "../context/AuthContext";
 
 const JobDetails = () => {
   const { id } = useParams();
+  const { user } = useAuth();
 
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -33,6 +36,15 @@ const JobDetails = () => {
       </h2>
     );
   }
+
+  const handleApply = async () => {
+  try {
+    const response = await applyJob(job._id);
+    alert(response.message);
+  } catch (error) {
+    alert(error.response?.data?.message || "Failed to apply");
+  }
+};
 
   return (
     <div className="max-w-5xl mx-auto py-10 px-5">
@@ -95,11 +107,14 @@ const JobDetails = () => {
 
         </div>
 
-        <button
-          className="mt-8 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
-        >
-          Apply Now
-        </button>
+        {user?.role === "candidate" && (
+  <button
+    onClick={handleApply}
+    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg"
+  >
+    Apply Now
+  </button>
+)}
 
       </div>
     </div>

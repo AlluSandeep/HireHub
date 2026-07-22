@@ -125,7 +125,7 @@ exports.updateApplicationStatus = async (req, res) => {
     const { status } = req.body;
 
     // Check valid status
-    const validStatus = ["Pending", "Reviewed", "Selected", "Rejected"];
+    const validStatus = ["Pending", "Reviewed", "Shortlisted", "Rejected"];
 
     if (!validStatus.includes(status)) {
       return res.status(400).json({

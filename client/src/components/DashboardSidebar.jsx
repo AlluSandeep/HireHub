@@ -1,6 +1,10 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
 
 const DashboardSidebar = () => {
+
+  const { user } = useAuth();
   return (
     <aside className="w-64 bg-slate-900 text-white p-6">
 

@@ -71,6 +71,13 @@ const RecruiterJobs = () => {
                   Edit
                 </Link>
 
+                <Link
+  to={`/recruiter/jobs/${job._id}/applicants`}
+  className="bg-blue-600 text-white px-3 py-1 rounded"
+>
+  Applicants
+</Link>
+
                 <button
                   onClick={() => handleDelete(job._id)}
                   className="bg-red-600 text-white px-3 py-1 rounded"

@@ -17,10 +17,14 @@ import RecruiterJobs from "./pages/recruiter/RecruiterJobs";
 import PostJob from "./pages/recruiter/PostJob";
 import CreateCompany from "./pages/recruiter/CreateCompany";
 import CompanyList from "./pages/recruiter/CompanyList";
+import JobApplicants from "./pages/recruiter/JobApplicants";
 
 import CandidateDashboard from "./pages/candidate/CandidateDashboard";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import MyApplications from "./pages/candidate/MyApplications";
+import SavedJobs from "./pages/candidate/SavedJobs";
+import Profile from "./pages/candidate/Profile";
 
 function App() {
   return (
@@ -47,6 +51,10 @@ function App() {
         <Route path="dashboard" element={<RecruiterDashboard />} />
         <Route path="jobs" element={<RecruiterJobs />} />
         <Route path="post-job" element={<PostJob />} />
+        <Route
+  path="jobs/:jobId/applicants"
+  element={<JobApplicants />}
+/>
 
         {/* Company Routes */}
         <Route path="companies" element={<CompanyList />} />
@@ -54,14 +62,20 @@ function App() {
       </Route>
 
       {/* Candidate Routes */}
-      <Route
-        path="/candidate/dashboard"
-        element={
-          <ProtectedRoute allowedRoles={["candidate"]}>
-            <CandidateDashboard />
-          </ProtectedRoute>
-        }
-      />
+<Route
+  path="/candidate"
+  element={
+    <ProtectedRoute allowedRoles={["candidate"]}>
+      <DashboardLayout />
+    </ProtectedRoute>
+  }
+>
+  <Route index element={<CandidateDashboard />} />
+  <Route path="dashboard" element={<CandidateDashboard />} />
+  <Route path="applications" element={<MyApplications />} />
+  <Route path="saved-jobs" element={<SavedJobs />} />
+  <Route path="profile" element={<Profile />} />
+</Route>
 
       {/* Unauthorized */}
       <Route path="/unauthorized" element={<Unauthorized />} />

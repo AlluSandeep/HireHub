@@ -3,6 +3,9 @@ require("dotenv").config();
 const http = require("http");
 const app = require("./app");
 const connectDB = require("./config/db");
+const applicationRoutes = require("./routes/applicationRoutes");
+
+app.use("/api/applications", applicationRoutes);
 
 const PORT = process.env.PORT || 5000;
 

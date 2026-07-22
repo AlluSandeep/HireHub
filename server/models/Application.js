@@ -14,9 +14,24 @@ const applicationSchema = new mongoose.Schema(
       required: true,
     },
 
+    resume: {
+      type: String,
+      default: "",
+    },
+
+    coverLetter: {
+      type: String,
+      default: "",
+    },
+
     status: {
       type: String,
-      enum: ["Pending", "Reviewed", "Selected", "Rejected"],
+      enum: [
+        "Pending",
+        "Reviewed",
+        "Shortlisted",
+        "Rejected",
+      ],
       default: "Pending",
     },
   },

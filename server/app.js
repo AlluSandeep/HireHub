@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 
 // Original Auth Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/company", companyRoutes);
+app.use("/api/companies", companyRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/users", userRoutes);

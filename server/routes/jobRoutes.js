@@ -8,6 +8,7 @@ const {
   createJob,
   getAllJobs,
   getJobById,
+  getMyJobs,
   updateJob,
   deleteJob
 } = require("../controllers/jobController");
@@ -28,6 +29,12 @@ router.post(
 // Get All Jobs
 router.get("/", getAllJobs);
 router.get("/:id", getJobById);
+router.get(
+  "/my-jobs",
+  authMiddleware,
+  roleMiddleware("recruiter"),
+  getMyJobs
+);
 router.put(
   "/:id",
   authMiddleware,

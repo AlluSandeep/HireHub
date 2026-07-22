@@ -167,6 +167,27 @@ exports.getJobById = async (req, res) => {
   }
 };
 
+// Get Recruiter's Jobs
+exports.getMyJobs = async (req, res) => {
+  try {
+    const jobs = await Job.find({
+      recruiter: req.user.id,
+    })
+      .populate("company");
+
+    res.status(200).json({
+      success: true,
+      count: jobs.length,
+      jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 exports.updateJob = async (req, res) => {
   try {
 

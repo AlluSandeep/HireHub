@@ -10,7 +10,8 @@ const {
   getJobById,
   getMyJobs,
   updateJob,
-  deleteJob
+  deleteJob,
+  getRecruiterStats,
 } = require("../controllers/jobController");
 
 const { jobValidation } = require("../validations/jobValidation");
@@ -28,19 +29,33 @@ router.post(
 
 // Get All Jobs
 router.get("/", getAllJobs);
-router.get("/:id", getJobById);
+
+// Dashboard Stats
+router.get(
+  "/stats/dashboard",
+  authMiddleware,
+  roleMiddleware("recruiter"),
+  getRecruiterStats
+);
+
+// Recruiter's Jobs
 router.get(
   "/my-jobs",
   authMiddleware,
   roleMiddleware("recruiter"),
   getMyJobs
 );
+
+// Get Job By Id
+router.get("/:id", getJobById);
+
 router.put(
   "/:id",
   authMiddleware,
   roleMiddleware("recruiter"),
   updateJob
 );
+
 router.delete(
   "/:id",
   authMiddleware,

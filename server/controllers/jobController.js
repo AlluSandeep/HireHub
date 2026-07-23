@@ -1,5 +1,6 @@
 const Company = require("../models/Company");
 const Job = require("../models/Job");
+const Application = require("../models/Application");
 
 exports.createJob = async (req, res) => {
 
@@ -257,5 +258,45 @@ exports.deleteJob = async (req, res) => {
       message: error.message
     });
 
+  }
+};
+
+// Recruiter Dashboard Stats
+exports.getRecruiterStats = async (req, res) => {
+  try {
+    const recruiterId = req.user.id;
+
+    const jobs = await Job.find({
+      recruiter: recruiterId,
+    });
+
+    const totalJobs = jobs.length;
+
+    const activeJobs = jobs.filter((job) => job.status).length;
+
+    const pendingJobs = totalJobs - activeJobs;
+
+    const jobIds = jobs.map((job) => job._id);
+
+    const totalApplications = await Application.countDocuments({
+      job: {
+        $in: jobIds,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        totalJobs,
+        activeJobs,
+        pendingJobs,
+        totalApplications,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };

@@ -27,5 +27,6 @@ export const getCandidateResume = async (candidateId) => {
   const response = await api.get(
     `/applications/candidate/${candidateId}/resume`
   );
+
   return response.data;
 };

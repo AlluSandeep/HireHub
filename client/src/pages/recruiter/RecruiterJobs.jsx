@@ -73,7 +73,7 @@ const RecruiterJobs = () => {
 
                 <Link
   to={`/recruiter/jobs/${job._id}/applicants`}
-  className="bg-blue-600 text-white px-3 py-1 rounded"
+  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm"
 >
   Applicants
 </Link>

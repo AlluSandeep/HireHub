@@ -10,7 +10,8 @@ const {
   getMyApplications,
   getApplicantsByJob,
   updateApplicationStatus,
-  getCandidateResume
+  getCandidateResume,
+  getRecentApplicants,
 } = require("../controllers/applicationController");
 
 router.post(
@@ -25,6 +26,13 @@ router.get(
   authMiddleware,
   roleMiddleware("candidate"),
   getMyApplications
+);
+
+router.get(
+  "/recent",
+  authMiddleware,
+  roleMiddleware("recruiter"),
+  getRecentApplicants
 );
 
 router.get(

@@ -1,31 +1,28 @@
 import { useState } from "react";
 import { uploadResume } from "../../services/userService";
+import { toast } from "react-toastify";
 
 const Profile = () => {
 
     const [resume,setResume]=useState(null);
 
-    const handleUpload=async(e)=>{
+    const handleUpload = async (e) => {
+  e.preventDefault();
 
-        e.preventDefault();
+  if (!resume) {
+    return toast.error("Select Resume");
+  }
 
-        if(!resume){
-            return alert("Select Resume");
-        }
+  try {
+    const data = await uploadResume(resume);
 
-        try{
-
-            const data=await uploadResume(resume);
-
-            alert(data.message);
-
-        }catch(error){
-
-            alert(error.response?.data?.message);
-
-        }
-
-    }
+    toast.success(data.message);
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message || "Upload failed"
+    );
+  }
+};
 
     return(
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createCompany } from "../../services/companyService";
+import { toast } from "react-toastify";
 
 const CreateCompany = () => {
   const [formData, setFormData] = useState({
@@ -23,7 +24,9 @@ const CreateCompany = () => {
     try {
       const data = await createCompany(formData);
 
-      alert(data.message || "Company Created Successfully");
+      toast.success(
+  data.message || "Company Created Successfully"
+);
 
       setFormData({
   companyName: "",
@@ -33,7 +36,10 @@ const CreateCompany = () => {
   companyDescription: "",
 });
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to create company");
+      toast.error(
+  error.response?.data?.message ||
+  "Failed to create company"
+);
     }
   };
 

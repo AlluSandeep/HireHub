@@ -1,28 +1,36 @@
 import { useEffect, useState } from "react";
 import { getMyApplications } from "../../services/applicationService";
+import Loader from "../../components/Loader";
+import { toast } from "react-toastify";
 
 const MyApplications = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchApplications = async () => {
-    try {
-      const data = await getMyApplications();
-      setApplications(data.applications);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    setLoading(true);
+
+    const data = await getMyApplications();
+
+    setApplications(data.applications);
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to fetch applications"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchApplications();
   }, []);
 
   if (loading) {
-    return <h2 className="text-xl">Loading...</h2>;
-  }
+  return <Loader />;
+}
 
   return (
     <div>

@@ -1,8 +1,11 @@
 import api from "./api";
 
 // Get all jobs
-export const getAllJobs = async () => {
-  const response = await api.get("/jobs");
+export const getAllJobs = async (params = {}) => {
+  const response = await api.get("/jobs", {
+    params,
+  });
+
   return response.data;
 };
 

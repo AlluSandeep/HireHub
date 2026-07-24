@@ -1,33 +1,58 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
 import { getMyJobs, deleteJob } from "../../services/jobService";
+
+import Loader from "../../components/Loader";
+import { toast } from "react-toastify";
 
 const RecruiterJobs = () => {
   const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchJobs = async () => {
-    try {
-      const data = await getMyJobs();
-      setJobs(data.jobs);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  try {
+    setLoading(true);
+
+    const data = await getMyJobs();
+
+    setJobs(data.jobs);
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to fetch jobs"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchJobs();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Delete this job?")) return;
+  if (loading) {
+  return <Loader />;
+}
 
-    try {
-      await deleteJob(id);
-      fetchJobs();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const handleDelete = async (id) => {
+  if (!window.confirm("Delete this job?")) return;
+
+  try {
+    const data = await deleteJob(id);
+
+    toast.success(
+      data.message || "Job deleted successfully"
+    );
+
+    fetchJobs();
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to delete job"
+    );
+  }
+};
 
   return (
     <div>

@@ -1,33 +1,61 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getMyCompanies, deleteCompany } from "../../services/companyService";
+
+import {
+  getMyCompanies,
+  deleteCompany,
+} from "../../services/companyService";
+
+import Loader from "../../components/Loader";
+import { toast } from "react-toastify";
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
+const [loading, setLoading] = useState(true);
 
   const fetchCompanies = async () => {
-    try {
-      const data = await getMyCompanies();
-      setCompanies(data.companies);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  try {
+    setLoading(true);
+
+    const data = await getMyCompanies();
+
+    setCompanies(data.companies);
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to fetch companies"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchCompanies();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Delete this company?")) return;
+  if (loading) {
+  return <Loader />;
+}
 
-    try {
-      await deleteCompany(id);
-      fetchCompanies();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const handleDelete = async (id) => {
+  if (!window.confirm("Delete this company?")) return;
+
+  try {
+    const data = await deleteCompany(id);
+
+    toast.success(
+      data.message || "Company deleted successfully"
+    );
+
+    fetchCompanies();
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to delete company"
+    );
+  }
+};
 
   return (
     <div>

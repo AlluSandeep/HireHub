@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createJob } from "../../services/jobService";
 import { getMyCompanies } from "../../services/companyService";
+import { toast } from "react-toastify";
 
 const PostJob = () => {
   const [companies, setCompanies] = useState([]);
@@ -50,7 +51,9 @@ useEffect(() => {
 
 const data = await createJob(jobData);
 
-      alert(data.message || "Job Posted Successfully");
+      toast.success(
+  data.message || "Job Posted Successfully"
+);
 
       setFormData({
         title: "",
@@ -62,7 +65,10 @@ const data = await createJob(jobData);
         description: "",
       });
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to post job");
+      toast.error(
+  error.response?.data?.message ||
+  "Failed to post job"
+);
     }
   };
 

@@ -211,3 +211,35 @@ exports.getCandidateResume = async (req, res) => {
 
   }
 };
+
+exports.getRecentApplicants = async (req, res) => {
+  try {
+    const applications = await Application.find()
+      .populate({
+        path: "job",
+        match: {
+          recruiter: req.user.id,
+        },
+        select: "title",
+      })
+      .populate("candidate", "fullName email")
+      .sort({ createdAt: -1 });
+
+    const filtered = applications
+      .filter((app) => app.job)
+      .slice(0, 5);
+
+    res.status(200).json({
+      success: true,
+      applicants: filtered,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};

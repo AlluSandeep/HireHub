@@ -20,49 +20,51 @@ import CompanyList from "./pages/recruiter/CompanyList";
 import JobApplicants from "./pages/recruiter/JobApplicants";
 
 import CandidateDashboard from "./pages/candidate/CandidateDashboard";
-
-import ProtectedRoute from "./components/ProtectedRoute";
 import MyApplications from "./pages/candidate/MyApplications";
 import SavedJobs from "./pages/candidate/SavedJobs";
 import Profile from "./pages/candidate/Profile";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route path="jobs" element={<Jobs />} />
-        <Route path="jobs/:id" element={<JobDetails />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-      </Route>
+    <>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path="jobs" element={<Jobs />} />
+          <Route path="jobs/:id" element={<JobDetails />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Route>
 
-      {/* Recruiter Routes */}
-      <Route
-        path="/recruiter"
-        element={
-          <ProtectedRoute allowedRoles={["recruiter"]}>
-            <DashboardLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<RecruiterDashboard />} />
-        <Route path="dashboard" element={<RecruiterDashboard />} />
-        <Route path="jobs" element={<RecruiterJobs />} />
-        <Route path="post-job" element={<PostJob />} />
+        {/* Recruiter Routes */}
         <Route
-  path="jobs/:jobId/applicants"
-  element={<JobApplicants />}
-/>
+  path="/recruiter"
+  element={
+    <ProtectedRoute allowedRoles={["recruiter"]}>
+      <DashboardLayout />
+    </ProtectedRoute>
+  }
+>
+  <Route index element={<RecruiterDashboard />} />
+  <Route path="dashboard" element={<RecruiterDashboard />} />
+  <Route path="jobs" element={<RecruiterJobs />} />
+  <Route path="post-job" element={<PostJob />} />
+  <Route
+    path="jobs/:jobId/applicants"
+    element={<JobApplicants />}
+  />
+  <Route path="companies" element={<CompanyList />} />
+  <Route path="company/create" element={<CreateCompany />} />
+</Route>
 
-        {/* Company Routes */}
-        <Route path="companies" element={<CompanyList />} />
-        <Route path="company/create" element={<CreateCompany />} />
-      </Route>
-
-      {/* Candidate Routes */}
-<Route
+        {/* Candidate Routes */}
+        <Route
   path="/candidate"
   element={
     <ProtectedRoute allowedRoles={["candidate"]}>
@@ -77,12 +79,28 @@ function App() {
   <Route path="profile" element={<Profile />} />
 </Route>
 
-      {/* Unauthorized */}
-      <Route path="/unauthorized" element={<Unauthorized />} />
+        {/* Unauthorized */}
+        <Route
+          path="/unauthorized"
+          element={<Unauthorized />}
+        />
 
-      {/* 404 */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        {/* 404 */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      {/* Toast Notifications */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
+    </>
   );
 }
 

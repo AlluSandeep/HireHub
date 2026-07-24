@@ -30,3 +30,8 @@ export const getCandidateResume = async (candidateId) => {
 
   return response.data;
 };
+
+export const getRecentApplicants = async () => {
+  const response = await api.get("/applications/recent");
+  return response.data;
+};

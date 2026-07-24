@@ -4,6 +4,7 @@ import { getJobById } from "../services/jobService";
 import Loader from "../components/Loader";
 import { applyJob } from "../services/applicationService";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -40,9 +41,12 @@ const JobDetails = () => {
   const handleApply = async () => {
   try {
     const response = await applyJob(job._id);
-    alert(response.message);
+
+    toast.success(response.message || "Application submitted successfully");
   } catch (error) {
-    alert(error.response?.data?.message || "Failed to apply");
+    toast.error(
+      error.response?.data?.message || "Failed to apply"
+    );
   }
 };
 

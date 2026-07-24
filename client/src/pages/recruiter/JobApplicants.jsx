@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   getApplicantsByJob,
   updateApplicationStatus,
@@ -25,27 +26,34 @@ const JobApplicants = () => {
   }, []);
 
   const handleStatus = async (id, status) => {
-    try {
-      await updateApplicationStatus(id, status);
-      fetchApplicants();
-    } catch (error) {
-      alert(error.response?.data?.message || "Failed to update status");
-    }
-  };
+  try {
+    await updateApplicationStatus(id, status);
+
+    toast.success("Status Updated Successfully");
+
+    fetchApplicants();
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message || "Failed to update status"
+    );
+  }
+};
 
   const handleResume = async (candidateId) => {
-    try {
-      const data = await getCandidateResume(candidateId);
+  try {
+    const data = await getCandidateResume(candidateId);
 
-      if (data?.candidate?.resume) {
-        window.open(data.candidate.resume, "_blank");
-      } else {
-        alert("Resume not found");
-      }
-    } catch (error) {
-      alert(error.response?.data?.message || "Unable to open resume");
+    if (data?.candidate?.resume) {
+      window.open(data.candidate.resume, "_blank");
+    } else {
+      toast.error("Resume not found");
     }
-  };
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message || "Unable to open resume"
+    );
+  }
+};
 
   return (
     <div className="p-6">
